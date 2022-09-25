@@ -1,0 +1,29 @@
+
+
+body {
+    background-color: #BFD9CC;
+}
+
+h1{
+    text-align: center;
+    color: rgb(123, 164, 247);
+    font-size: 120px;
+    position: relative;
+    width: 1000px;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -400px;
+    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Press Start 2P', cursive;
+}
+
+#game-surface{
+    margin-top: 300px;
+}
+
+.game-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

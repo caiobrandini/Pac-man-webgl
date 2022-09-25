@@ -1,12 +1,20 @@
 <html>
 	<head>
+		<link rel="stylesheet" href="style.css">
 		<title>PacGuy - PG</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100&family=Press+Start+2P&display=swap" rel="stylesheet">
+
 	</head>
 	<body onload="main();">
-		<canvas id="game-surface" width="800" height="600">
-			Sem Suporte a WebGl
-		</canvas>
-		<br />
+		<h1>PacGuy</h1>
+		<div class="game-content">
+			<canvas id="game-surface" width="2000" height="1200">
+				Sem Suporte a WebGl
+			</canvas>
+		</div>
 		<script src="gl-matrix.js"></script>
 		<script src="app.js"></script>
 	</body>

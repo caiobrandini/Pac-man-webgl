@@ -132,6 +132,47 @@ var andando = false
 // Distância entre cada "quadrado" do campo
 var deslocamento = 3
 
+var mesaVertices = 
+[     // X, Y, Z           R, G, B
+	//MESA RGB
+	// Top
+	-10.0, 6.0, -8.0,   0.5, 0.5, 1.0,
+	-10.0, 6.0, -1.0,    0.5, 0.5, 1.0,
+	10.0, 6.0, -1.0,     0.5, 0.5, 1.0,
+	10.0, 6.0, -8.0,    0.5, 0.5, 1.0,
+
+	// Left
+	-10.0, 6.0, -1.0,    0.25, 0.25, 0.75,
+	-10.0, -5.0, -1.0,   0.25, 0.25, 0.75,
+	-10.0, -5.0, -8.0,  0.25, 0.25, 0.75,
+	-10.0, 6.0, -8.0,   0.25, 0.25, 0.75,
+
+	// Right
+	10.0, 6.0, -1.0,    0.25, 0.25, 0.75,
+	10.0, -5.0, -1.0,   0.25, 0.25, 0.75,
+	10.0, -5.0, -8.0,  0.25, 0.25, 0.75,
+	10.0, 6.0, -8.0,   0.25, 0.25, 0.75,
+
+	// Front
+	10.0, 6.0, -1.0,    0.9, 0.0, 0.0,
+	10.0, -5.0, -1.0,    0.5, 0.0, 0.5,
+	-10.0, -5.0, -1.0,    0.0, 0.0, 0.9,
+	-10.0, 6.0, -1.0,    0.5, 0.0, 0.5,
+
+	// Back
+	1.0, 1.0, -8.0,    0.0, 1.0, 0.0,
+	1.0, -5.0, -8.0,    0.0, 1.0, 0.0,
+	-1.0, -5.0, -8.0,    0.0, 1.0, 0.0,
+	-1.0, 1.0, -8.0,    0.0, 1.0, 0.0,
+
+	// Bottom
+	-10.0, -5.0, -8.0,   0.0, 0.0, 0.0,
+	-10.0, -5.0, -1.0,    0.0, 0.0, 0.4,
+	10.0, -5.0, -1.0,     0.5, 0.0, 0.5,
+	10.0, -5.0, -8.0,    0.0, 0.0, 0.0
+];
+var mesaIndices = [...indicesDefault]
+
 var pacManVertices =
 	[ 	// X, Y, Z           R, G, B
 		//PACMAN
@@ -182,6 +223,15 @@ var main = function () {
 		vertices: pacManVertices,
 		indices: [...pacManIndices] 
 	} 
+
+	let mesaObj = {
+		nome: "mesa",
+		id: -1,
+		ativo: true,
+		vertices: mesaVertices,
+		indices: [...mesaIndices] 
+	} 
+
 	// Criamos o buffer com os pontos
 	var boxVertices = [];
 
@@ -190,6 +240,7 @@ var main = function () {
 
 	// Adiciona o pacman na lista de objetos
 	listaObjetos.push(pacManObj)
+	listaObjetos.push(mesaObj)
 
 	// Cria todas as bolinhas e as coloca na lista de objetos
 	criarTodasBolinhas()
@@ -199,6 +250,8 @@ var main = function () {
 
 	// Deletamos a bolinha onde o pacman inicia
 	removerBolinha(1,1)
+
+	listaObjetos.push()
 
 	// Criamos o canvas com o webGl
 	setupScene (boxVertices, boxIndices)
@@ -385,7 +438,7 @@ function setupScene (boxVertices, boxIndices) {
 	var viewMatrix = new Float32Array(16);
 	var projMatrix = new Float32Array(16);
 	mat4.identity(worldMatrix); 
-	mat4.lookAt(viewMatrix, [0, 0, 12], [0, 0, 0], [0, 1, 0]); // câmera que seta
+	mat4.lookAt(viewMatrix, [0, -15, 12], [0, 0, 0], [0, 1, 0]); // câmera que seta
 	mat4.perspective(projMatrix, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
 
 	gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
