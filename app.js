@@ -31,14 +31,19 @@ var fragmentShaderText =
 var gl = undefined
 
 // Quantidade de objetos no buffer
-var qntObjetos = 1
+var qntObjetos = 0
 
 // Campo representado como uma matriz
 // 0 é um espaço vazio, 1 possui uma bolinha
-var campo = [1, 1, 1,
-			 1, 1, 1,
-			 1, 1, 1]
+var campo = [1, 2, 3,
+			 4, 5, 6,
+			 7, 8, 9]
 
+// Campo que contém a bolinha naquela posição
+var campoBolinhas = []
+
+// Contém os objetos que podem ser carregados
+var listaObjetos = []
 
 // Posicao do pacman no campo
 var posicaoPacman = [1, 1]
@@ -127,81 +132,73 @@ var andando = false
 // Distância entre cada "quadrado" do campo
 var deslocamento = 3
 
-var main = function () {
-
-	// Criamos o buffer com os pontos
-	var boxVertices = 
+var pacManVertices =
 	[ 	// X, Y, Z           R, G, B
 		//PACMAN
 		// Top
-		-1.0, 1.0, -1.0,   0.5, 0.5, 0.5,
-		-1.0, 1.0, 1.0,    0.5, 0.5, 0.5,
-		1.0, 1.0, 1.0,     0.5, 0.5, 0.5,
-		1.0, 1.0, -1.0,    0.5, 0.5, 0.5,
+		-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
+		-1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
+		1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
+		1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
 
 		// Left
-		-1.0, 1.0, 1.0,    0.75, 0.25, 0.5,
-		-1.0, -1.0, 1.0,   0.75, 0.25, 0.5,
-		-1.0, -1.0, -1.0,  0.75, 0.25, 0.5,
-		-1.0, 1.0, -1.0,   0.75, 0.25, 0.5,
+		-1.0, 1.0, 1.0, 0.75, 0.25, 0.5,
+		-1.0, -1.0, 1.0, 0.75, 0.25, 0.5,
+		-1.0, -1.0, -1.0, 0.75, 0.25, 0.5,
+		-1.0, 1.0, -1.0, 0.75, 0.25, 0.5,
 
 		// Right
-		1.0, 1.0, 1.0,    0.25, 0.25, 0.75,
-		1.0, -1.0, 1.0,   0.25, 0.25, 0.75,
-		1.0, -1.0, -1.0,  0.25, 0.25, 0.75,
-		1.0, 1.0, -1.0,   0.25, 0.25, 0.75,
+		1.0, 1.0, 1.0, 0.25, 0.25, 0.75,
+		1.0, -1.0, 1.0, 0.25, 0.25, 0.75,
+		1.0, -1.0, -1.0, 0.25, 0.25, 0.75,
+		1.0, 1.0, -1.0, 0.25, 0.25, 0.75,
 
 		// Front
-		1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
-		1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
-		-1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
-		-1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
+		1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
+		1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
+		-1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
+		-1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
 
 		// Back
-		1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
-		1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
-		-1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
-		-1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
+		1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
+		1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
+		-1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
+		-1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
 
 		// Bottom
-		-1.0, -1.0, -1.0,   0.5, 0.5, 1.0,
-		-1.0, -1.0, 1.0,    0.5, 0.5, 1.0,
-		1.0, -1.0, 1.0,     0.5, 0.5, 1.0,
-		1.0, -1.0, -1.0,    0.5, 0.5, 1.0
+		-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
+		-1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
+		1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
+		1.0, -1.0, -1.0, 0.5, 0.5, 1.0
 	];
+
+var pacManIndices =[...indicesDefault];
+
+var main = function () {
+	let pacManObj = {
+		nome: "pacman",
+		id: 0,
+		ativo: true,
+		vertices: pacManVertices,
+		indices: [...pacManIndices] 
+	} 
+	// Criamos o buffer com os pontos
+	var boxVertices = [];
 
 	// Buffer com os vértices que "ligam" os pontos
-	var boxIndices =
-	[
-		// Top
-		0, 1, 2,
-		0, 2, 3,
+	var boxIndices = [];
 
-		// Left
-		5, 4, 6,
-		6, 4, 7,
+	// Adiciona o pacman na lista de objetos
+	listaObjetos.push(pacManObj)
 
-		// Right
-		8, 9, 10,
-		8, 10, 11,
+	// Cria todas as bolinhas e as coloca na lista de objetos
+	criarTodasBolinhas()
 
-		// Front
-		13, 12, 14,
-		15, 14, 12,
-
-		// Back
-		16, 17, 18,
-		16, 18, 19,
-
-		// Bottom
-		21, 20, 22,
-		22, 20, 23
-	];
-
-	criarTodasBolinhas(boxVertices, boxIndices)
+	for(let x = 0; x < listaObjetos.length; x++) 
+		addObject(listaObjetos[x], boxVertices, boxIndices)
 
 	// Deletamos a bolinha onde o pacman inicia
-	removerBolinha(boxVertices, 1,1)
+	removerBolinha(1,1)
 
 	// Criamos o canvas com o webGl
 	setupScene (boxVertices, boxIndices)
@@ -213,6 +210,16 @@ var main = function () {
 
 	// Loop que atualiza a tela a cada frame
 	var loop = function () {
+		qntObjetos = 0;
+		boxVertices = []
+		boxIndices = []
+
+		// Adiciona apenas os objetos ativos
+		for(let x = 0; x < listaObjetos.length; x++) {
+			if (listaObjetos[x].ativo) {
+				addObject(listaObjetos[x], boxVertices, boxIndices)
+			}
+		}
 
 		gl.clearColor(0.75, 0.85, 0.8, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
@@ -233,51 +240,54 @@ var main = function () {
 	requestAnimationFrame(loop);
 };
 
+// Adiciona um objeto ao canvas
+function addObject(objeto, boxVertices, boxIndices) {
+	boxVertices.push(...objeto.vertices)
+	boxIndices.push(...formatarIndices([...objeto.indices]))
+	qntObjetos++;
+}
+
 function criarBolinha(linha, coluna) {
 	let bolinha = [...bolinhaDefault]
 	for ( let x = 0; x < bolinhaDefault.length; x+=6) {
 		bolinha[x] += coluna*deslocamento
 		bolinha[x+1] -= linha*deslocamento
 	}
-	qntObjetos++;
-
 	return bolinha;
 }
 
-function removerBolinha(boxvertices, x, y) {
-
-	// Começo dos valores COR de uma bolinha na posição x,y
-	let comeco = 144 + (144 * getObjArrayPos(x,y)) + 3
-
-	// Remove a bolinha do campo
-	campo[ getObjArrayPos(x,y) ] = 0
-
-	for(let i=comeco; i<comeco+144; i+=6) {
-		boxvertices[i]=0.75
-		boxvertices[i+1]=0.85
-		boxvertices[i+2]=0.8
-	}
+function removerBolinha(x, y) {
+	campoBolinhas[getObjArrayPos(x,y)].ativo = false
 }
 
-function criarIndices() { 
-	let indices = [...indicesDefault]
-
-	for(let x=0;x<36;x++){
-		indices[x]+=(qntObjetos-1)*24
+function formatarIndices(indices) {
+	for(let x=0; x < indices.length; x++) {
+		indices[x] += qntObjetos*24
 	}
-
 	return indices
 }
 
-function criarTodasBolinhas(boxVertices, boxIndices) {
+function criarIndicesQuadrado() { 
+	let indices = [...indicesDefault]
+	return indices
+}
+
+function criarTodasBolinhas() {
 	for (let i=0; i < 3; i++) {
 		for (let j=0; j < 3; j++) {
 			// Para cada bolinha, criamos seu buffer com 
 			// seus vertices e inserimos no boxVertices,
 			// adicionando também seus indices
 			let novaBolinha = criarBolinha(i,j)
-			boxVertices.push(...novaBolinha)
-			boxIndices.push(...criarIndices())
+			let bolinhaObj = {
+				id: i*3+j,
+				ativo: true,
+				vertices: [...novaBolinha],
+				indices: [...criarIndicesQuadrado()] 
+			}
+			listaObjetos.push(bolinhaObj)
+			campoBolinhas.push(bolinhaObj)
+			
 		}	
 	}
 }
@@ -383,22 +393,20 @@ function setupScene (boxVertices, boxIndices) {
 	gl.uniformMatrix4fv(matProjUniformLocation, gl.FALSE, projMatrix);
 }
 
-// Move pacman caso o usuário tenha feito um movimento
-function moverPacman (novoVetor, vetorAntigo) {
+function moverPacman () {
 		// Itera pelos pontos do pacman, alterando apenas o X ou Y 
 		// e incrementando os valores baseados com o movimento atual
 		for(let i = offset; i < tamanhoPacman && movRestante > 0; i++ ) {
 			if(i % 6 == offset) 
-				novoVetor[i] = vetorAntigo[i] + incremento
+				pacManVertices[i] = pacManVertices[i] + incremento
 		}
 
 		movRestanteFix = Math.abs(movRestante.toFixed(1))
 
-		// Se não temos mais movimentos restantes, paramos de andar
 		if (movRestanteFix == 0) {
 			// Se tem uma bolinha na posição atual do pacman, remova ela
-			if(campo[getObjArrayPos(posicaoPacman[0],posicaoPacman[1])] == 1)
-				removerBolinha(novoVetor, posicaoPacman[0], posicaoPacman[1])
+			if(campoBolinhas[getObjArrayPos(posicaoPacman[0],posicaoPacman[1])] != null)
+				removerBolinha(posicaoPacman[0], posicaoPacman[1])
 
 			andando = false
 		} 
