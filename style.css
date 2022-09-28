@@ -10,10 +10,10 @@ h1{
     font-size: 90px;
     position: relative;
     width: 1000px;
-    margin-top: 150px;
+    margin-top: 110px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: -400px;
+    margin-bottom: -350px;
     font-family: 'Inter Tight', sans-serif;
     font-family: 'Press Start 2P', cursive;
 }
@@ -21,10 +21,21 @@ h1{
 #game-surface{
     margin-top: 300px;
     max-width: 82vw;
+    max-height: 75vh;
 }
 
-.game-content{
+.game-content, .btns-container{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.btns-container{
+    margin-top: 60px;
+}
+
+.btns-container button {
+    padding: 12px;
+    margin: 15px;
+    cursor: pointer;
 }
