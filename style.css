@@ -70,6 +70,24 @@ h1{
     font-family: 'Press Start 2P', cursive;
 }
 
+.game-won-title {
+    margin: 0;
+    position: absolute; 
+    left: 0;             
+    top: 50%;                         
+    transform: translate(0, -50%);
+    width: 100vw;
+    
+    color: greenyellow;
+    text-align: center;
+    font-size: 100px;
+    font-weight: 600;
+    z-index: 100;
+
+    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Press Start 2P', cursive;
+}
+
 .reload {
     margin: 0;
     position: absolute; 

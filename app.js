@@ -41,7 +41,7 @@ var listaObjetos = []
 
 // Posicao do pacman no campo
 var posicaoPyramid = [3, 1]
-var posicaoPacman = [3, 1]
+var posicaoPacman = [0, 2]
 
 // Tamanho (todos valores dos pontos) do pacman
 var tamanhoPacman = 144
@@ -56,6 +56,9 @@ var powerupAtivo = false
 
 // Contador de powerup
 var qntPowerup = 0
+
+var pyramidAlive = true
+var gameRunning = true
 
 // Indices do powerup
 var indicesPowerup = [	
@@ -373,40 +376,40 @@ var pacManVertices =
 	[ 	// X, Y, Z           R, G, B
 		//PACMAN
 		// Top
-		-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
-		-1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
-		1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
-		1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
+		-10.0, -2.0, -1.0, 1, 0.7, 0,
+		-10.0, -2.0, 1.0, 1, 0.7, 0,
+		-8.0, -2.0, 1.0, 1, 0.4, 0,
+		-8.0, -2.0, -1.0, 1, 0.4, 0,
 
 		// Left
-		-1.0, 1.0, 1.0, 0.75, 0.25, 0.5,
-		-1.0, -1.0, 1.0, 0.75, 0.25, 0.5,
-		-1.0, -1.0, -1.0, 0.75, 0.25, 0.5,
-		-1.0, 1.0, -1.0, 0.75, 0.25, 0.5,
+		-10.0, -2.0, 1.0, 1, 0.4, 0,
+		-10.0, -4.0, 1.0, 1, 0.4, 0,
+		-10.0, -4.0, -1.0, 1, 0.7, 0,
+		-10.0, -2.0, -1.0, 1, 0.7, 0,
 
 		// Right
-		1.0, 1.0, 1.0, 0.25, 0.25, 0.75,
-		1.0, -1.0, 1.0, 0.25, 0.25, 0.75,
-		1.0, -1.0, -1.0, 0.25, 0.25, 0.75,
-		1.0, 1.0, -1.0, 0.25, 0.25, 0.75,
+		-8.0, -2.0, 1.0, 1, 0.7, 0,
+		-8.0, -4.0, 1.0, 1, 0.7, 0,
+		-8.0, -4.0, -1.0, 1, 0.4, 0,
+		-8.0, -2.0, -1.0, 1, 0.4, 0,
 
 		// Front
-		1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
-		1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
-		-1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
-		-1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
+		-8.0, -2.0, 1.0, 1, 0.7, 0,
+		-8.0, -4.0, 1.0, 1, 0.7, 0,
+		-10.0, -4.0, 1.0, 1, 0.4, 0,
+		-10.0, -2.0, 1.0, 1, 0.4, 0,
 
 		// Back
-		1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
-		1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-		-1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-		-1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
+		-8.0, -2.0, -1.0, 1, 0.4, 0,
+		-8.0, -4.0, -1.0, 1, 0.4, 0,
+		-10.0, -4.0, -1.0, 1, 0.7, 0,
+		-10.0, -2.0, -1.0, 1, 0.7, 0,
 
 		// Bottom
-		-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
-		-1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
-		1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
-		1.0, -1.0, -1.0, 0.5, 0.5, 1.0
+		-10.0, -4.0, -1.0, 1, 0.7, 0,
+		-10.0, -4.0, 1.0, 1, 0.7, 0,
+		-8.0, -4.0, 1.0, 1, 0.4, 0,
+		-8.0, -4.0, -1.0, 1, 0.4, 0
 	];
 
 
@@ -472,6 +475,8 @@ var boxVertices = [];
 
 var powerUpObj;
 
+let pyramidObj;
+
 var main = function () {
 	let pacManObj = {
 		nome: "pacman",
@@ -489,7 +494,7 @@ var main = function () {
 		indices: [...mesaIndices] 
 	} 
 
-	let pyramidObj = {
+	pyramidObj = {
 		nome: "pyramid",
 		id: 11,
 		ativo: true,
@@ -521,6 +526,7 @@ var main = function () {
 
 	// Deletamos a bolinha onde o pacman inicia
 	removerBolinha(3,1)
+	removerBolinha(0,2)
 
 	// Criamos o canvas com o webGl
 	setupScene (boxVertices, boxIndices)
@@ -559,7 +565,8 @@ var main = function () {
 		boxVertices = novoVetor
 
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(boxVertices), gl.STATIC_DRAW);
-		requestAnimationFrame(loop);
+		if(gameRunning)
+			requestAnimationFrame(loop);
 	};
 	requestAnimationFrame(loop);
 };
@@ -583,12 +590,48 @@ function criarBolinha(linha, coluna) {
 	return bolinha;
 }
 
+function colorirPacman(ativo){
+	let alternar = true
+	for(let x=3; x < tamanhoPacman; x+=6) {
+		alternar = !alternar
+		if(ativo) {
+			if(alternar) {
+				pacManVertices[x] = 0.9
+				pacManVertices[x+1] = 0
+				pacManVertices[x+2] = 0
+			} else {
+				pacManVertices[x] = 0.2
+				pacManVertices[x+1] = 0
+				pacManVertices[x+2] = 0
+			}
+			
+		} else {
+			if(alternar) {
+				pacManVertices[x] = 1
+				pacManVertices[x+1] = 0.4
+				pacManVertices[x+2] = 0.0
+			} else {
+				pacManVertices[x] = 1
+				pacManVertices[x+1] = 0.7
+				pacManVertices[x+2] = 0.0
+			}
+			
+		}
+		
+	}
+
+}
+
 function consumirPowerup() {
+	if(powerUpObj.ativo == false)
+		return
 	powerUpObj.ativo = false;
 	powerupAtivo = true;
+	colorirPacman(true)
 	setTimeout(function() {
+		colorirPacman(false)
 		powerupAtivo = false;
-	}, 5000);
+	}, 2500);
 }
 
 function setupPowerup() {
@@ -686,7 +729,8 @@ function mover(tecla) {
 
 	/* Movimento da Pyramid */
 	// Seleciona movimento
-	movimentoPyramid();
+	if(pyramidAlive)
+		movimentoPyramid();
 
 	andando = true
 }
@@ -767,12 +811,27 @@ function moverPacman () {
 
 		if (movRestanteFix == 0) {
 			// Se tem uma bolinha na posição atual do pacman, remova ela
+			if (posicaoPyramid[0] == posicaoPacman[0] && posicaoPyramid[1] == posicaoPacman[1]){
+				if(powerupAtivo) {
+					posicaoPyramid[0] = -1
+					posicaoPyramid[1] = -1
+					pyramidObj.ativo = false
+					pyramidAlive = false
+				} else {
+					gameOver()
+				}
+				
+			}
+				
 			if(campoBolinhas[getObjArrayPos(posicaoPacman[0],posicaoPacman[1])] != null){
 				removerBolinha(posicaoPacman[0], posicaoPacman[1])
 			} else if (posicaoPacman[0] == 3 && posicaoPacman[1] == 1){ // consome o powerup especial
 				consumirPowerup() 
 			}
 
+			if(qntObjetos==2 || qntObjetos==3 && pyramidAlive) {
+				gameWon()
+			}
 		andando = false
 	} 
 	// Caso contrário, continuamos o movimento
@@ -782,8 +841,9 @@ function moverPacman () {
 }
 
 function moverPyramid () {
-	// Itera pelos pontos do pacman, alterando apenas o X ou Y 
-	// e incrementando os valores baseados com o movimento atual
+
+	if(!pyramidAlive)
+		return
 	for(let i = offsetPyramid; i < tamanhoPacman && movRestantePyramid > 0; i++ ) {
 		if(i % 6 == offsetPyramid) 
 			pyramidVertices[i] = pyramidVertices[i] + incrementoPy
@@ -808,13 +868,12 @@ function movimentoPyramid () {
 		dir = getRndInteger(0, 1);
 		mov = getRndInteger(-1, 1);
 		i = posicaoPyramid[dir] + mov;
-		console.log(dir + " " + i);
-	} while(i < 0 || (dir == 0 && i > 7) || (dir == 1 && i > 2) || mov == 0);
+	} while(i < 0 || (dir == 0 && i > 6) || (dir == 1 && i > 2) || mov == 0);
 	posicaoPyramid[dir] += mov;
 	offsetPyramid = dir;
 	movRestantePyramid = deslocamento;
 
-	if(mov > 0){
+	if(mov > 0 && dir == 0 || mov < 0 && dir == 1 ){
 		incrementoPy = 0.1;
 	}
 	else{
@@ -847,6 +906,28 @@ function alterarCamera(e){
 	}
 
 	setupScene(boxVertices, boxIndices);
+}
+
+function gameOver() {
+	gameRunning = false
+	document.querySelector('.game-over').style.display = 'block';
+	document.querySelector('.game-over-title').style.display = 'block';
+	document.querySelector('.reload').style.display = 'block';
+	
+}
+
+function gameWon(){
+	gameRunning = false
+	document.querySelector('.game-over').style.display = 'block';
+	document.querySelector('.game-won-title').style.display = 'block';
+	document.querySelector('.reload').style.display = 'block';
+}
+
+const reloadBtn = document.querySelector('.reload')
+reloadBtn.addEventListener("click", reload);
+
+function reload() {
+	location.reload() 
 }
 
 //alterando cameras
