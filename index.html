@@ -1,15 +1,24 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="style.css">
-		<link rel="icon" type="image/x-icon" href="img/fav.webp">
+		<link rel="icon" type="image/x-icon" href="src/img/fav.webp">
 		<title>PacGuy - PG</title>
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100&family=Press+Start+2P&display=swap" rel="stylesheet">
-
 	</head>
+
 	<body onload="main();">
+		<audio controls autoplay volume="0.1" id="musica" style="position: absolute; top: 10;">
+		  <source src="src/sounds/ost.mp3" type="audio/mp3">
+		Your browser does not support the audio element.
+		</audio>
+		<script>
+		  var audio = document.getElementById("musica");
+		  audio.volume = 0.2;
+		</script>
+
 		<div style="display: none" class="game-over"></div>
 		<div style="display: none" class="game-won-title">VOCÊ VENCEU😋😍🤩🤗!!</div>
 		<div style="display: none" class="game-over-title">GAME OVER</div>
