@@ -51,6 +51,11 @@ var posicaoPacman = [1, 1]
 // Tamanho (todos valores dos pontos) do pacman
 var tamanhoPacman = 144
 
+//Configurações de camera
+var cx = 0;
+var cy = -15;
+var cz = 12;
+
 // Modelo de bolinha posicionada em (0,0)
 var bolinhaDefault = [
 		// Top
@@ -174,109 +179,52 @@ var mesaVertices =
 var mesaIndices = [...indicesDefault]
 
 var pacManVertices =
-[ 	// X, Y, Z           R, G, B
-	//PACMAN
-	// Top
-	-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
-	-1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
-	1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
-	1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
+	[ 	// X, Y, Z           R, G, B
+		//PACMAN
+		// Top
+		-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
+		-1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
+		1.0, 1.0, 1.0, 0.5, 0.5, 0.5,
+		1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
 
-	// Left
-	-1.0, 1.0, 1.0, 0.75, 0.25, 0.5,
-	-1.0, -1.0, 1.0, 0.75, 0.25, 0.5,
-	-1.0, -1.0, -1.0, 0.75, 0.25, 0.5,
-	-1.0, 1.0, -1.0, 0.75, 0.25, 0.5,
+		// Left
+		-1.0, 1.0, 1.0, 0.75, 0.25, 0.5,
+		-1.0, -1.0, 1.0, 0.75, 0.25, 0.5,
+		-1.0, -1.0, -1.0, 0.75, 0.25, 0.5,
+		-1.0, 1.0, -1.0, 0.75, 0.25, 0.5,
 
-	// Right
-	1.0, 1.0, 1.0, 0.25, 0.25, 0.75,
-	1.0, -1.0, 1.0, 0.25, 0.25, 0.75,
-	1.0, -1.0, -1.0, 0.25, 0.25, 0.75,
-	1.0, 1.0, -1.0, 0.25, 0.25, 0.75,
+		// Right
+		1.0, 1.0, 1.0, 0.25, 0.25, 0.75,
+		1.0, -1.0, 1.0, 0.25, 0.25, 0.75,
+		1.0, -1.0, -1.0, 0.25, 0.25, 0.75,
+		1.0, 1.0, -1.0, 0.25, 0.25, 0.75,
 
-	// Front
-	1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
-	1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
-	-1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
-	-1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
+		// Front
+		1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
+		1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
+		-1.0, -1.0, 1.0, 1.0, 0.0, 0.15,
+		-1.0, 1.0, 1.0, 1.0, 0.0, 0.15,
 
-	// Back
-	1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
-	1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-	-1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-	-1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
+		// Back
+		1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
+		1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
+		-1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
+		-1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
 
-	// Bottom
-	-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
-	-1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
-	1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
-	1.0, -1.0, -1.0, 0.5, 0.5, 1.0
-];
-
-var pyramidVertices= [
-	// Top
-	-1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
-	0.0, 0.0, 1.0, 0.5, 0.5, 0.5,
-	0.0, 0.0, 1.0, 0.5, 0.5, 0.5,
-	1.0, 1.0, -1.0, 0.5, 0.5, 0.5,
-
-	// Left
-	0.0, 0.0, 1.0, 0.75, 0.25, 0.5,
-	0.0, 0.0, 1.0, 0.75, 0.25, 0.5,
-	-1.0, -1.0, -1.0, 0.75, 0.25, 0.5,
-	-1.0, 1.0, -1.0, 0.75, 0.25, 0.5,
-
-	// Right
-	0.0, 0.0, 1.0, 0.25, 0.25, 0.75,
-	0.0, 0.0, 1.0, 0.25, 0.25, 0.75,
-	1.0, -1.0, -1.0, 0.25, 0.25, 0.75,
-	1.0, 1.0, -1.0, 0.25, 0.25, 0.75,
-
-	// Front
-	0.0, 0.0, 1.0, 1.0, 0.0, 0.15,
-	0.0, 0.0, 1.0, 1.0, 0.0, 0.15,
-	0.0, 0.0, 1.0, 1.0, 0.0, 0.15,
-	0.0, 0.0, 1.0, 1.0, 0.0, 0.15,
-
-	// Back
-	1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
-	1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-	-1.0, -1.0, -1.0, 0.0, 1.0, 0.15,
-	-1.0, 1.0, -1.0, 0.0, 1.0, 0.15,
-
-	// Bottom
-	-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
-	0.0, 0.0, 1.0, 0.5, 0.5, 1.0,
-	0.0, 0.0, 1.0, 0.5, 0.5, 1.0,
-	1.0, -1.0, -1.0, 0.5, 0.5, 1.0
-];
-var pyramidIndices= [
-	// Top
-	0, 1, 2,
-	0, 2, 3,
-
-	// Left
-	5, 4, 6,
-	6, 4, 7,
-
-	// Right
-	8, 9, 10,
-	8, 10, 11,
-
-	// Front
-	13, 12, 14,
-	15, 14, 12,
-
-	// Back
-	16, 17, 18,
-	16, 18, 19,
-
-	// Bottom
-	21, 20, 22,
-	22, 20, 23
-];
+		// Bottom
+		-1.0, -1.0, -1.0, 0.5, 0.5, 1.0,
+		-1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
+		1.0, -1.0, 1.0, 0.5, 0.5, 1.0,
+		1.0, -1.0, -1.0, 0.5, 0.5, 1.0
+	];
 
 var pacManIndices =[...indicesDefault];
+
+// Buffer com os vértices que "ligam" os pontos
+var boxIndices = [];
+
+// Criamos o buffer com os pontos
+var boxVertices = [];
 
 var main = function () {
 	let pacManObj = {
@@ -293,27 +241,12 @@ var main = function () {
 		ativo: true,
 		vertices: mesaVertices,
 		indices: [...mesaIndices] 
-	}
+	} 
 
-	let pyramidObj = {
-		nome: "pyramid",
-		id: 11,
-		ativo: true,
-		vertices: pyramidVertices,
-		indices: [...pyramidIndices]
-	}
-
-	// Criamos o buffer com os pontos
-	var boxVertices = [];
-
-	// Buffer com os vértices que "ligam" os pontos
-	var boxIndices = [];
 
 	// Adiciona o pacman na lista de objetos
 	listaObjetos.push(pacManObj)
-	listaObjetos.push(pyramidObj)
 	listaObjetos.push(mesaObj)
-	
 
 	// Cria todas as bolinhas e as coloca na lista de objetos
 	criarTodasBolinhas()
@@ -511,7 +444,7 @@ function setupScene (boxVertices, boxIndices) {
 	var viewMatrix = new Float32Array(16);
 	var projMatrix = new Float32Array(16);
 	mat4.identity(worldMatrix); 
-	mat4.lookAt(viewMatrix, [0, -15, 12], [0, 0, 0], [0, 1, 0]); // câmera que seta
+	mat4.lookAt(viewMatrix, [cx, cy, cz], [0, 0, 0], [0, 1, 0]); // câmera que seta
 	mat4.perspective(projMatrix, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
 
 	gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
@@ -541,3 +474,38 @@ function moverPacman () {
 			movRestante-= 0.1;
 		}
 }
+
+function alterarCamera(e){
+	console.log(e);
+	console.log(e.target.id);
+
+	if(e.target.id == 'camera-cima'){
+		cx = 0;
+		cy = 0;
+		cz = 20;
+	}
+
+	if(e.target.id == 'camera-lado'){
+		cx = -12;
+		cy = 10;
+		cz = 20;
+	}
+
+	if(e.target.id == 'camera-tab'){
+		cx = 0;
+		cy = -15;
+		cz = 12;
+	}
+
+	setupScene(boxVertices, boxIndices);
+}
+
+//alterando cameras
+const btnCamCima = document.getElementById("camera-cima");
+btnCamCima.addEventListener("click", alterarCamera);
+
+const cameraLado = document.getElementById("camera-lado");
+cameraLado.addEventListener("click", alterarCamera);
+
+const cameraTab = document.getElementById("camera-tab");
+cameraTab.addEventListener("click", alterarCamera);
