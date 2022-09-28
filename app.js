@@ -40,7 +40,7 @@ var campoBolinhas = []
 var listaObjetos = []
 
 // Posicao do pacman no campo
-var posicaoPyramid = [1, 1]
+var posicaoPyramid = [3, 1]
 var posicaoPacman = [3, 1]
 
 // Tamanho (todos valores dos pontos) do pacman
@@ -582,8 +582,9 @@ function movimentoPyramid () {
 		dir = getRndInteger(0, 1);
 		mov = getRndInteger(-1, 1);
 		i = posicaoPyramid[dir] + mov;
-	} while(i < 0 && i > 3 && mov == 0);
-	posicaoPyramid[dir] += i;
+		console.log(dir + " " + i);
+	} while(i < 0 || (dir == 0 && i > 7) || (dir == 1 && i > 3) || mov == 0);
+	posicaoPyramid[dir] += mov;
 	offsetPyramid = dir;
 	movRestantePyramid = deslocamento;
 
