@@ -47,6 +47,7 @@ var listaObjetos = []
 
 // Posicao do pacman no campo
 var posicaoPacman = [1, 1]
+var posicaoPyramid = [1, 1]
 
 // Tamanho (todos valores dos pontos) do pacman
 var tamanhoPacman = 144
@@ -54,40 +55,40 @@ var tamanhoPacman = 144
 // Modelo de bolinha posicionada em (0,0)
 var bolinhaDefault = [
 		// Top
-		-3.5, 3.5, -1.0,   1.0, 1.0, 0.0, 
-		-3.5, 3.5, 1.0,    1.0, 1.0, 0.0,
-		-2.5, 3.5, 1.0,     1.0, 0.8, 0.0, 
-		-2.5, 3.5, -1.0,   1.0, 0.8, 0.0,
+		-3.5, 3.5, -0.5,   1.0, 1.0, 0.0, 
+		-3.5, 3.5, 0.5,    1.0, 1.0, 0.0,
+		-2.5, 3.5, 0.5,     1.0, 0.8, 0.0, 
+		-2.5, 3.5, -0.5,   1.0, 0.8, 0.0,
 
 		// Left
-		-3.5, 3.5, 1.0,    1.0, 1.0, 0.0,
-		-3.5, 2.5, 1.0,   1.0, 1.0, 0.0,
-		-3.5, 2.5, -1.0,  1.0, 1.0, 0.0,
-		-3.5, 3.5, -1.0,   1.0, 1.0, 0.0,
+		-3.5, 3.5, 0.5,    1.0, 1.0, 0.0,
+		-3.5, 2.5, 0.5,   1.0, 1.0, 0.0,
+		-3.5, 2.5, -0.5,  1.0, 1.0, 0.0,
+		-3.5, 3.5, -0.5,   1.0, 1.0, 0.0,
 
 		// Right
-		-2.5, 3.5, 1.0,    1.0, 0.8, 0.0,
-		-2.5, 2.5, 1.0,   1.0, 0.8, 0.0,
-		-2.5, 2.5, -1.0,  1.0, 1.0, 0.0,
-		-2.5, 3.5, -1.0,   1.0, 1.0, 0.0,
+		-2.5, 3.5, 0.5,    1.0, 0.8, 0.0,
+		-2.5, 2.5, 0.5,   1.0, 0.8, 0.0,
+		-2.5, 2.5, -0.5,  1.0, 1.0, 0.0,
+		-2.5, 3.5, -0.5,   1.0, 1.0, 0.0,
 
 		// Front
-		-2.5, 3.5, 1.0,    1.0, 0.8, 0.0,
-		-2.5, 2.5, 1.0,    1.0, 0.8, 0.0,
-		-3.5, 2.5, 1.0,    1.0, 1.0, 0.0,
-		-3.5, 3.5, 1.0,    1.0, 1.0, 0.0,
+		-2.5, 3.5, 0.5,    1.0, 0.8, 0.0,
+		-2.5, 2.5, 0.5,    1.0, 0.8, 0.0,
+		-3.5, 2.5, 0.5,    1.0, 1.0, 0.0,
+		-3.5, 3.5, 0.5,    1.0, 1.0, 0.0,
 
 		// Back
-		-2.5, 3.5, -1.0,    1.0, 1.0, 0.0,
-		-2.5, 2.5, -1.0,    1.0, 1.0, 0.0,
-		-3.5, 2.5, -1.0,    1.0, 1.0, 0.0,
-		-3.5, 3.5, -1.0,    1.0, 1.0, 0.0,
+		-2.5, 3.5, -0.5,    1.0, 1.0, 0.0,
+		-2.5, 2.5, -0.5,    1.0, 1.0, 0.0,
+		-3.5, 2.5, -0.5,    1.0, 1.0, 0.0,
+		-3.5, 3.5, -0.5,    1.0, 1.0, 0.0,
 
 		// Bottom
-		-3.5, 2.5, -1.0,   1.0, 1, 0.0,
-		-3.5, 2.5, 1.0,    1.0, 1, 0.0,
-		-2.5, 2.5, 1.0,     1.0, 0.8, 0.0,
-		-2.5, 2.5, -1.0,    1.0, 0.8, 0.0
+		-3.5, 2.5, -0.5,   1.0, 1, 0.0,
+		-3.5, 2.5, 0.5,    1.0, 1, 0.0,
+		-2.5, 2.5, 0.5,     1.0, 0.8, 0.0,
+		-2.5, 2.5, -0.5,    1.0, 0.8, 0.0
 ]
 
 // Indices padrões de um quadrado
@@ -119,15 +120,20 @@ var indicesDefault = [
 
 // Quantidade de movimento que ainda falta ser realizado
 var movRestante = 0
+var movRestantePyramid = 0;
+
 // Quantidade de movimento que é realizado a cada iteração do loop
 var incremento = 0
+var incrementoPy = 0;
 
 // Offset para iterar sobre o buffer, se offset está em 0, serão alterados
 // os valores de X, se está em 1, serão alterados valores de Y
 var offset = 0
+var offsetPyramid = 0;
 
 // Diz se o Pacman está andando no momento
 var andando = false
+var andandoPyramid = false
 
 // Distância entre cada "quadrado" do campo
 var deslocamento = 3
@@ -355,7 +361,8 @@ var main = function () {
 		var novoVetor = [...boxVertices]
 
 		// Realiza o movimento do pacman caso houver
-		moverPacman(novoVetor, boxVertices)
+		moverPacman();
+		moverPyramid();
 
 		// O buffer renderizado agora vai ser o novo que realizamos as alterações
 		boxVertices = novoVetor
@@ -452,6 +459,10 @@ function mover(tecla) {
 		posicaoPacman[0] += 1
 	}
 
+	/* Movimento da Pyramid */
+	// Seleciona movimento
+	movimentoPyramid();
+
 	andando = true
 }
 
@@ -520,24 +531,70 @@ function setupScene (boxVertices, boxIndices) {
 }
 
 function moverPacman () {
-		// Itera pelos pontos do pacman, alterando apenas o X ou Y 
-		// e incrementando os valores baseados com o movimento atual
-		for(let i = offset; i < tamanhoPacman && movRestante > 0; i++ ) {
-			if(i % 6 == offset) 
-				pacManVertices[i] = pacManVertices[i] + incremento
-		}
+	// Itera pelos pontos do pacman, alterando apenas o X ou Y 
+	// e incrementando os valores baseados com o movimento atual
+	for(let i = offset; i < tamanhoPacman && movRestante > 0; i++ ) {
+		if(i % 6 == offset) 
+			pacManVertices[i] = pacManVertices[i] + incremento
+	}
 
-		movRestanteFix = Math.abs(movRestante.toFixed(1))
+	let movRestanteFix = Math.abs(movRestante.toFixed(1))
 
-		if (movRestanteFix == 0) {
-			// Se tem uma bolinha na posição atual do pacman, remova ela
-			if(campoBolinhas[getObjArrayPos(posicaoPacman[0],posicaoPacman[1])] != null)
-				removerBolinha(posicaoPacman[0], posicaoPacman[1])
+	if (movRestanteFix == 0) {
+		// Se tem uma bolinha na posição atual do pacman, remova ela
+		if(campoBolinhas[getObjArrayPos(posicaoPacman[0],posicaoPacman[1])] != null)
+			removerBolinha(posicaoPacman[0], posicaoPacman[1])
 
-			andando = false
-		} 
-		// Caso contrário, continuamos o movimento
-		else {
-			movRestante-= 0.1;
-		}
+		andando = false
+	} 
+	// Caso contrário, continuamos o movimento
+	else {
+		movRestante-= 0.1;
+	}
+}
+
+function moverPyramid () {
+	// Itera pelos pontos do pacman, alterando apenas o X ou Y 
+	// e incrementando os valores baseados com o movimento atual
+	for(let i = offsetPyramid; i < tamanhoPacman && movRestantePyramid > 0; i++ ) {
+		if(i % 6 == offsetPyramid) 
+			pyramidVertices[i] = pyramidVertices[i] + incrementoPy
+	}
+
+	let movRestanteFix = Math.abs(movRestantePyramid.toFixed(1))
+
+	if (movRestanteFix == 0) {
+		andandoPyramid = false
+	} 
+	// Caso contrário, continuamos o movimento
+	else {
+		movRestantePyramid -= 0.1;
+		console.log(movRestantePyramid);
+	}
+}
+
+function movimentoPyramid () {
+	let i;
+	let dir;
+	let mov;
+	do {
+		dir = getRndInteger(0, 1);
+		mov = getRndInteger(-1, 1);
+		i = posicaoPyramid[dir] + mov;
+	} while(i < 0 && i > 3 && mov == 0);
+	posicaoPyramid[dir] += i;
+	offsetPyramid = dir;
+	movRestantePyramid = deslocamento;
+
+	if(mov > 0){
+		incrementoPy = 0.1;
+	}
+	else{
+		incrementoPy = -0.1;
+	}
+	andandoPyramid = true;
+}
+
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
