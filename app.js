@@ -45,197 +45,6 @@ var posicaoPacman = [3, 1]
 // Tamanho (todos valores dos pontos) do pacman
 var tamanhoPacman = 144
 
-// Boolean para indicar se o pacman está com powerup
-var powerupAtivo = false
-
-// Contador de powerup
-var qntPowerup = 0
-
-// Indices do powerup
-var indicesPowerup = [	
-	// Top
-	0, 1, 2,
-	0, 2, 3,
-
-	// Left
-	5, 4, 6,
-	6, 4, 7,
-
-	// Right
-	8, 9, 10,
-	8, 10, 11,
-
-	// Front
-	13, 12, 14,
-	15, 14, 12,
-
-	// Back
-	16, 17, 18,
-	16, 18, 19,
-
-	// Bottom
-	21, 20, 22,
-	22, 20, 23,
-	
-	0+24, 1+24, 2+24,
-	0+24, 2+24, 3+24,
-
-	// Left
-	5+24, 4+24, 6+24,
-	6+24, 4+24, 7+24,
-
-	// Right
-	8+24, 9+24, 10+24,
-	8+24, 10+24, 11+24,
-
-	// Front
-	13+24, 12+24, 14+24,
-	15+24, 14+24, 12+24,
-
-	// Back
-	16+24, 17+24, 18+24,
-	16+24, 18+24, 19+24,
-
-	// Bottom
-	21+24, 20+24, 22+24,
-	22+24, 20+24, 23+24,
-
-	0+48, 1+48, 2+48,
-	0+48, 2+48, 3+48,
-
-	// Left
-	5+48, 4+48, 6+48,
-	6+48, 4+48, 7+48,
-
-	// Right
-	8+48, 9+48, 10+48,
-	8+48, 10+48, 11+48,
-
-	// Front
-	13+48, 12+48, 14+48,
-	15+48, 14+48, 12+48,
-
-	// Back
-	16+48, 17+48, 18+48,
-	16+48, 18+48, 19+48,
-
-	// Bottom
-	21+48, 20+48, 22+48,
-	22+48, 20+48, 23+48
-]
-
-// Vértices do powerup
-var verticesPowerup = [
-	// X, Y, Z           R, G, B
-			// Top
-			-1.0, 1.5, -1.0, 0.0, 0.0, 0,
-			-1.0, 1.5, 3.0, 0.0, 0.0, 0,
-			1.0, 1.5, 3.0, 0.9, 0.0, 0,
-			1.0, 1.5, -1.0, 0.9, 0.0, 0,
-	
-			// Left
-			-1.0, 1.5, 3.0, 0.0, 0.0, 0,
-			-1.0, -1.5, 3.0, 0.0, 0.0, 0,
-			-1.0, -1.5, -1.0, 0.9, 0.0, 0,
-			-1.0, 1.5, -1.0, 0.9, 0.0, 0,
-	
-			// Right
-			1.0, 1.5, 3.0, 0.0, 0.0, 0,
-			1.0, -1.5, 3.0, 0.0, 0.0, 0,
-			1.0, -1.5, -1.0, 0.9, 0.0, 0,
-			1.0, 1.5, -1.0, 0.9, 0.0, 0,
-	
-			// Front
-			1.0, 1.5, 2.0, 0.0, 0.0, 0,
-			1.0, -1.5, 2.0, 0.0, 0.0, 0,
-			-1.0, -1.5, 2.0, 0.9, 0.0, 0,
-			-1.0, 1.5, 2.0, 0.9, 0.0, 0,
-	
-			// Back
-			1.0, 1.5, -1.0, 0.0, 0.0, 0,
-			1.0, -1.5, -1.0, 0.0, 0.0, 0,
-			-1.0, -1.5, -1.0, 0.9, 0.0, 0,
-			-1.0, 1.5, -1.0, 0.9, 0.0, 0,
-	
-			// Bottom
-			-1.0, -1.5, -0.0, 0.0, 0.0, 0,
-			-1.0, -1.5, 2.0, 0.0, 0.0, 0,
-			1.0, -1.5, 2.0, 0.9, 0.0, 0,
-			1.0, -1.5, -0.0, 0.9, 0.0, 0,
-	// X, Y, Z           R, G, B
-		// Top
-		-1.0, 1.0, -1.0, 0.0, 0.0, 0.0,
-		-1.0, 1.0, 1.0, 0.0, 0.0, 0.0,
-		1.0, 1.0, 1.0, 0.9, 0.0, 0.0,
-		1.0, 1.0, -1.0, 0.9, 0.0, 0.0,
-	
-		// Left
-		-1.0, 1.0, 3.0, 0.0, 0.0, 0.0,
-		-1.0, -1.0, 3.0, 0.0, 0.0, 0.0,
-		-1.0, -1.0, -1.0, 0.9, 0.0, 0.0,
-		-1.0, 1.0, -1.0, 0.9, 0.0, 0.0,
-	
-		// Right
-		1.0, 1.0, 3.0, 0.0, 0.0, 0.0,
-		1.0, -1.0, 3.0, 0.0, 0.0, 0.0,
-		1.0, -1.0, -1.0, 0.9, 0.0, 0.0,
-		1.0, 1.0, -1.0, 0.9, 0.0, 0.0,
-	
-		// Front
-		1.0, 1.0, 3.0, 0.0, 0.0, 0.0,
-		1.0, -1.0, 3.0, 0.0, 0.0, 0.0,
-		-1.0, -1.0, 3.0, 0.9, 0.0, 0.0,
-		-1.0, 1.0, 3.0, 0.9, 0.0, 0.0,
-	
-		// Back
-		1.0, 1.0, -1.0, 0.0, 0.0, 0.0,
-		1.0, -1.0, -1.0, 0.0, 0.0, 0.0,
-		-1.0, -1.0, -1.0, 0.9, 0.0, 0.0,
-		-1.0, 1.0, -1.0, 0.9, 0.0, 0.0,
-	
-		// Bottom
-		-1.0, -1.0, -0.0, 0.0, 0.0, 0.0,
-		-1.0, -1.0, 3.0, 0.0, 0.0, 0.0,
-		1.0, -1.0, 3.0, 0.9, 0.0, 0.0,
-		1.0, -1.0, -0.0, 0.9, 0.0, 0.0,
-	// X, Y, Z           R, G, B
-		// Top
-		-1.5, 1.0, -1.0, 0.0, 0.0, 0.0,
-		-1.5, 1.0, 3.0, 0.0, 0.0, 0.0,
-		1.5, 1.0, 3.0, 0.9, 0.0, 0.0,
-		1.5, 1.0, -1.0, 0.9, 0.0, 0.0,
-	
-		// Left
-		-1.5, 1.0, 3.0, 0.0, 0.0,  0.0,
-		-1.5, -1.0, 3.0, 0.0, 0.0,  0.0,
-		-1.5, -1.0, -1.0, 0.9, 0.0,  0.0,
-		-1.5, 1.0, -1.0, 0.9, 0.0,  0.0,
-	
-		// Right
-		1.5, 1.0, 3.0, 0.0, 0.0,  0.0,
-		1.5, -1.0, 3.0, 0.0, 0.0,  0.0,
-		1.5, -1.0, -1.0, 0.9, 0.0,  0.0,
-		1.5, 1.0, -1.0, 0.9, 0.0,  0.0,
-	
-		// Front
-		1.5, 1.0, 2.0, 0.0, 0.0, 0.0,
-		1.5, -1.0, 2.0, 0.0, 0.0, 0.0,
-		-1.5, -1.0, 2.0, 0.9, 0.0, 0.0,
-		-1.5, 1.0, 2.0, 0.9, 0.0, 0.0,
-	
-		// Back
-		1.0, 1.0, -1.0, 0.0, 0.0,  0.0,
-		1.0, -1.0, -1.0, 0.0, 0.0,  0.0,
-		-1.0, -1.0, -1.0, 0.9, 0.0,  0.0,
-		-1.0, 1.0, -1.0, 0.9, 0.0,  0.0,
-	
-		// Bottom
-		-1.5, -1, -0.0, 0.0, 0.0,  0.0,
-		-1.5, -1, 2.0, 0.0, 0.0,  0.0,
-		1.5, -1, 2.0, 0.9, 0.0,  0.0,
-		1.5, -1, -0.0, 0.9, 0.0,  0.0,
-	]
-
 // Modelo de bolinha posicionada em (0,0)
 var bolinhaDefault = [
 		// Top
@@ -488,36 +297,28 @@ var main = function () {
 		indices: [...pyramidIndices]
 	}
 
-	setupPowerup();
-	let powerUpObj = {
-		nome: "powerup",
-		id: 1,
-		ativo: true,
-		vertices: [...verticesPowerup],
-		indices: [...indicesPowerup] 
-	}
-
 	// Criamos o buffer com os pontos
 	var boxVertices = [];
 
 	// Buffer com os vértices que "ligam" os pontos
 	var boxIndices = [];
 
-	// Adiciona os objetos do mapa na lista de objetos
+	// Adiciona o pacman na lista de objetos
 	listaObjetos.push(pacManObj)
 	listaObjetos.push(pyramidObj)
 	listaObjetos.push(mesaObj)
+	
 
 	// Cria todas as bolinhas e as coloca na lista de objetos
 	criarTodasBolinhas()
-
-	listaObjetos.push(powerUpObj);
 
 	for(let x = 0; x < listaObjetos.length; x++) 
 		addObject(listaObjetos[x], boxVertices, boxIndices)
 
 	// Deletamos a bolinha onde o pacman inicia
 	removerBolinha(3,1)
+
+	listaObjetos.push()
 
 	// Criamos o canvas com o webGl
 	setupScene (boxVertices, boxIndices)
@@ -548,7 +349,7 @@ var main = function () {
 		var novoVetor = [...boxVertices]
 
 		// Realiza o movimento do pacman caso houver
-		moverPacman(powerUpObj)
+		moverPacman(novoVetor, boxVertices)
 
 		// O buffer renderizado agora vai ser o novo que realizamos as alterações
 		boxVertices = novoVetor
@@ -559,30 +360,11 @@ var main = function () {
 	requestAnimationFrame(loop);
 };
 
-function consumirPowerup(powerUpObj) {
-	powerUpObj.ativo = false;
-	powerupAtivo = true;
-	setTimeout(function() {
-		powerupAtivo = false;
-	}, 5000);
-}
-
-function setupPowerup() {
-	for(let x = 0 ; x < verticesPowerup.length; x++) {
-		if(x%6 == 0 || x%6 == 1 || x%6 == 2) {
-			verticesPowerup[x]/=2
-		}
-	}
-}
-
 // Adiciona um objeto ao canvas
 function addObject(objeto, boxVertices, boxIndices) {
 	boxVertices.push(...objeto.vertices)
 	boxIndices.push(...formatarIndices([...objeto.indices]))
 	qntObjetos++;
-	if (objeto.nome == 'powerup'){
-		qntPowerup++;
-	}
 }
 
 function criarBolinha(linha, coluna) {
@@ -596,12 +378,11 @@ function criarBolinha(linha, coluna) {
 
 function removerBolinha(x, y) {
 	campoBolinhas[getObjArrayPos(x,y)].ativo = false
-	campoBolinhas[getObjArrayPos(x,y)] = null
 }
 
 function formatarIndices(indices) {
 	for(let x=0; x < indices.length; x++) {
-		indices[x] += (qntObjetos - qntPowerup) * 24 + qntPowerup*108
+		indices[x] += qntObjetos*24
 	}
 	return indices
 }
@@ -746,7 +527,7 @@ function setupScene (boxVertices, boxIndices) {
 	gl.uniformMatrix4fv(matProjUniformLocation, gl.FALSE, projMatrix);
 }
 
-function moverPacman (powerUpObj) {
+function moverPacman () {
 		// Itera pelos pontos do pacman, alterando apenas o X ou Y 
 		// e incrementando os valores baseados com o movimento atual
 		for(let i = offset; i < tamanhoPacman && movRestante > 0; i++ ) {
@@ -758,11 +539,8 @@ function moverPacman (powerUpObj) {
 
 		if (movRestanteFix == 0) {
 			// Se tem uma bolinha na posição atual do pacman, remova ela
-			if(campoBolinhas[getObjArrayPos(posicaoPacman[0],posicaoPacman[1])] != null){
+			if(campoBolinhas[getObjArrayPos(posicaoPacman[0],posicaoPacman[1])] != null)
 				removerBolinha(posicaoPacman[0], posicaoPacman[1])
-			} else if (posicaoPacman[0] == 3 && posicaoPacman[1] == 1){ // consome o powerup especial
-				//consumirPowerup(powerUpObj) 
-			}
 
 			andando = false
 		} 
