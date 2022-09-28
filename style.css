@@ -21,6 +21,7 @@ h1{
 #game-surface{
     margin-top: 300px;
     max-width: 82vw;
+    max-height: 75vh;
 }
 
 .game-content, .btns-container{
