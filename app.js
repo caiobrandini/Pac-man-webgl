@@ -33,12 +33,6 @@ var gl = undefined
 // Quantidade de objetos no buffer
 var qntObjetos = 0
 
-// Campo representado como uma matriz
-// 0 é um espaço vazio, 1 possui uma bolinha
-var campo = [1, 2, 3,
-			 4, 5, 6,
-			 7, 8, 9]
-
 // Campo que contém a bolinha naquela posição
 var campoBolinhas = []
 
@@ -46,7 +40,7 @@ var campoBolinhas = []
 var listaObjetos = []
 
 // Posicao do pacman no campo
-var posicaoPacman = [1, 1]
+var posicaoPacman = [3, 1]
 
 // Tamanho (todos valores dos pontos) do pacman
 var tamanhoPacman = 144
@@ -54,40 +48,40 @@ var tamanhoPacman = 144
 // Modelo de bolinha posicionada em (0,0)
 var bolinhaDefault = [
 		// Top
-		-3.5, 3.5, -1.0,   1.0, 1.0, 0.0, 
-		-3.5, 3.5, 1.0,    1.0, 1.0, 0.0,
-		-2.5, 3.5, 1.0,     1.0, 0.8, 0.0, 
-		-2.5, 3.5, -1.0,   1.0, 0.8, 0.0,
+		-9.5, 3.5, -1.0,   1.0, 1.0, 0.0, 
+		-9.5, 3.5, 1.0,    1.0, 1.0, 0.0,
+		-8.5, 3.5, 1.0,     1.0, 0.8, 0.0, 
+		-8.5, 3.5, -1.0,   1.0, 0.8, 0.0,
 
 		// Left
-		-3.5, 3.5, 1.0,    1.0, 1.0, 0.0,
-		-3.5, 2.5, 1.0,   1.0, 1.0, 0.0,
-		-3.5, 2.5, -1.0,  1.0, 1.0, 0.0,
-		-3.5, 3.5, -1.0,   1.0, 1.0, 0.0,
+		-9.5, 3.5, 1.0,    1.0, 1.0, 0.0,
+		-9.5, 2.5, 1.0,   1.0, 1.0, 0.0,
+		-9.5, 2.5, -1.0,  1.0, 1.0, 0.0,
+		-9.5, 3.5, -1.0,   1.0, 1.0, 0.0,
 
 		// Right
-		-2.5, 3.5, 1.0,    1.0, 0.8, 0.0,
-		-2.5, 2.5, 1.0,   1.0, 0.8, 0.0,
-		-2.5, 2.5, -1.0,  1.0, 1.0, 0.0,
-		-2.5, 3.5, -1.0,   1.0, 1.0, 0.0,
+		-8.5, 3.5, 1.0,    1.0, 0.8, 0.0,
+		-8.5, 2.5, 1.0,   1.0, 0.8, 0.0,
+		-8.5, 2.5, -1.0,  1.0, 1.0, 0.0,
+		-8.5, 3.5, -1.0,   1.0, 1.0, 0.0,
 
 		// Front
-		-2.5, 3.5, 1.0,    1.0, 0.8, 0.0,
-		-2.5, 2.5, 1.0,    1.0, 0.8, 0.0,
-		-3.5, 2.5, 1.0,    1.0, 1.0, 0.0,
-		-3.5, 3.5, 1.0,    1.0, 1.0, 0.0,
+		-8.5, 3.5, 1.0,    1.0, 0.8, 0.0,
+		-8.5, 2.5, 1.0,    1.0, 0.8, 0.0,
+		-9.5, 2.5, 1.0,    1.0, 1.0, 0.0,
+		-9.5, 3.5, 1.0,    1.0, 1.0, 0.0,
 
 		// Back
-		-2.5, 3.5, -1.0,    1.0, 1.0, 0.0,
-		-2.5, 2.5, -1.0,    1.0, 1.0, 0.0,
-		-3.5, 2.5, -1.0,    1.0, 1.0, 0.0,
-		-3.5, 3.5, -1.0,    1.0, 1.0, 0.0,
+		-8.5, 3.5, -1.0,    1.0, 1.0, 0.0,
+		-8.5, 2.5, -1.0,    1.0, 1.0, 0.0,
+		-9.5, 2.5, -1.0,    1.0, 1.0, 0.0,
+		-9.5, 3.5, -1.0,    1.0, 1.0, 0.0,
 
 		// Bottom
-		-3.5, 2.5, -1.0,   1.0, 1, 0.0,
-		-3.5, 2.5, 1.0,    1.0, 1, 0.0,
-		-2.5, 2.5, 1.0,     1.0, 0.8, 0.0,
-		-2.5, 2.5, -1.0,    1.0, 0.8, 0.0
+		-9.5, 2.5, -1.0,   1.0, 1, 0.0,
+		-9.5, 2.5, 1.0,    1.0, 1, 0.0,
+		-8.5, 2.5, 1.0,     1.0, 0.8, 0.0,
+		-8.5, 2.5, -1.0,    1.0, 0.8, 0.0
 ]
 
 // Indices padrões de um quadrado
@@ -322,7 +316,7 @@ var main = function () {
 		addObject(listaObjetos[x], boxVertices, boxIndices)
 
 	// Deletamos a bolinha onde o pacman inicia
-	removerBolinha(1,1)
+	removerBolinha(3,1)
 
 	listaObjetos.push()
 
@@ -400,7 +394,7 @@ function criarIndicesQuadrado() {
 
 function criarTodasBolinhas() {
 	for (let i=0; i < 3; i++) {
-		for (let j=0; j < 3; j++) {
+		for (let j=0; j < 7; j++) {
 			// Para cada bolinha, criamos seu buffer com 
 			// seus vertices e inserimos no boxVertices,
 			// adicionando também seus indices
@@ -420,7 +414,7 @@ function criarTodasBolinhas() {
 
 // Retorna a posição inicial de um objeto no vetor de vertices baseado nas coordenadas X e Y
 function getObjArrayPos(x,y) {
-	return x + y*3;
+	return x + y*7;
 }
 
 function mover(tecla) {
@@ -428,29 +422,43 @@ function mover(tecla) {
 	// Se já estamos nos movendo, ignore o movimento.
 	if (andando==true)
 		return;
+
+	let modX, modY;
 	
 	if (tecla === 'w') {
 		offset = 1
 		movRestante = deslocamento
 		incremento = 0.1
-		posicaoPacman[1] += -1
+		modY = posicaoPacman[1] - 1
 	} else if (tecla === 'a') {
 		offset = 0
 		movRestante = deslocamento
 		incremento = -0.1
-		posicaoPacman[0] += -1
+		modX = posicaoPacman[0] -1 
 
 	} else if (tecla === 's') {
 		offset  = 1 
 		movRestante = deslocamento
 		incremento = -0.1
-		posicaoPacman[1] += 1
+		modY = posicaoPacman[1] +1
 	} else if (tecla === 'd') {
 		offset  = 0 
 		movRestante = deslocamento
 		incremento = 0.1
-		posicaoPacman[0] += 1
+		modX = posicaoPacman[0]+1
+	} else {
+		return
 	}
+
+	if(modX>6 || modX<0 || modY>2 || modY<0) {
+		movRestante = 0
+		return
+	}
+	if (modX != undefined)
+		posicaoPacman[0] = modX + 0
+	else if (modY != undefined)
+	posicaoPacman[1] = modY + 0
+
 
 	andando = true
 }
